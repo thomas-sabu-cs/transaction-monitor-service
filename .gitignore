@@ -1,0 +1,30 @@
+# Maven
+target/
+pom.xml.tag
+pom.releaseBackup
+*.jar
+*.war
+*.ear
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Spring Boot
+spring-boot-devtools.properties
