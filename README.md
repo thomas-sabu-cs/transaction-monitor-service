@@ -2,6 +2,8 @@
 
 A production-style **REST API** for monitoring financial transactions with risk scoring. Built with **Java 17**, **Spring Boot 3**, and **Maven**. Uses **Spring Data JPA** with an **H2 in-memory** relational database so the application runs with no external database setup. Includes **JUnit 5** and **Mockito** for unit and integration tests, and **GitHub Actions** for CI/CD.
 
+This project emphasizes **Clean Code** and **Type Safety** over "just making it work": layered architecture, Bean Validation at the API boundary, consistent error contracts, and automated tests backed by CI.
+
 ## Tech Stack
 
 - **Java 17**
@@ -112,6 +114,18 @@ The workflow in `.github/workflows/ci.yml` runs on every **push** and **pull req
 4. Run `mvn test -B`  
 
 No secrets or deployment steps are required for this CI pipeline.
+
+## Technical Learning Log
+
+A short summary of the practices and tradeoffs in this codebase:
+
+- **Layered architecture**: Controller → Service → Repository keeps HTTP, business logic, and data access separate. The controller stays thin; the service holds rules (e.g. high-risk threshold) and transaction boundaries. This improves testability, reuse, and single responsibility.
+- **Data integrity**: Bean Validation on `TransactionRequest` (`@Valid`, `@NotNull`, `@Min`/`@Max`, `@Size`) rejects bad input at the API boundary. Invalid data never reaches the service or database, so the rest of the system can assume valid, type-safe inputs.
+- **Testing**: **Unit tests** (Mockito) verify service logic and repository interaction in isolation. **Integration tests** (MockMvc) verify the REST contract: status codes, JSON shape, and that validation and `GlobalExceptionHandler` return the expected 400/404 bodies.
+- **Error handling**: `GlobalExceptionHandler` turns exceptions into a stable JSON contract (e.g. 404 and 400 with `status`, `message`, `timestamp`, and for validation a field-level `errors` map). The frontend can rely on consistent status codes and response shapes.
+- **CI/CD**: The GitHub Actions workflow runs `mvn test` on every push and PR, catching regressions and enforcing a consistent build environment.
+
+For a deeper dive with code references, see **[LEARNINGS.md](LEARNINGS.md)**.
 
 ## License
 
