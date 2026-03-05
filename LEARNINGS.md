@@ -1,5 +1,6 @@
 # Technical Learnings — Transaction Monitor Service
 
+**tl;dr:** Implemented a Spring Boot 3 transaction service with a clean Controller → Service → Repository layering, Bean Validation at the API boundary, structured error handling via `GlobalExceptionHandler`, and both unit + integration tests enforced by GitHub Actions CI. Focus is on Clean Code and type-safe contracts, not just “it runs.”
 This document explains the **technical decisions** and **production-style practices** used in this Spring Boot 3 service. The project prioritizes **Clean Code** and **Type Safety** over "just making it work."
 
 ---
